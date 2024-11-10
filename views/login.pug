@@ -1,0 +1,20 @@
+extends layout 
+block content
+    .form-signin.w-100.m-auto
+        form(action="/user/login" method="POST")
+            img.mb-4(src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/1024px-Bootstrap_logo.svg.png?20210507000024' alt width='72' height='57')
+            h1.h3.mb-3.fw-normal Please sign in
+            .form-floating
+                input.form-control(type='text' placeholder='username' name='username' id='username')
+                label(for='username') Username 
+            .form-floating
+                input.form-control(type='password' id='password' name='password' placeholder='Password')
+                label(for='password') Password
+            .form-check.text-start.my-3
+                input#flexCheckDefault.form-check-input(type='checkbox' value='remember-me')
+                label.form-check-label(for='flexCheckDefault')
+                | Remember me
+            button.btn.btn-primary.w-100.py-2(type='submit') Sign in
+            p.mt-5.mb-3.text-body-secondary © 2017–2024
+
+

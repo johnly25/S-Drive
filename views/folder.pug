@@ -1,0 +1,78 @@
+extends layout 
+
+block content 
+    .container-fluid.px-5.pt-5
+        .row
+            .col-auto
+                .dropdown
+                    button.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+                        | Dropdown button
+                    ul.dropdown-menu.dropdown-menu-dark
+                        li
+                        a.dropdown-item.active(href='#folder-modal' data-bs-toggle='modal' data-bs-target='#folder-modal') Create Folder
+                        li
+                        a.dropdown-item(href='#upload-modal' data-bs-toggle='modal' data-bs-target='#upload-modal' ) Upload File 
+
+
+                #folder-modal.modal.fade(tabindex='-1' aria-labelledby='folder-modal' aria-hidden='true')
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                h1.modal-title.fs-5 Create Folder
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+                            .modal-body 
+                                form#create-folder-form(action="./create" method="POST")
+                                    .mb-3
+                                        label.form-label(for='folder-name') Folder Name
+                                        input#folder-name.form-control(type='text' name="folder-name" aria-describedby='folder-name' placeholder="name")
+
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                                button.btn.btn-primary(type='submit' form="create-folder-form") Create
+
+                #upload-modal.modal.fade(tabindex='-1' aria-labelledby='upload-modal' aria-hidden='true')
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                h1.modal-title.fs-5 Upload File 
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+                            .modal-body 
+                                form#upload-file-form(action="" method="POST" enctype="multipart/form-data")
+                                    .mb-3
+                                        label.form-label(for='upload-file') Upload File
+                                        input#upload-file.form-control(type='file' name="uploaded_file" aria-describedby='upload-file' placeholder="name")
+
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                                button.btn.btn-primary(type='submit' form="upload-file-form") Upload
+    if errors
+        .ps-5
+            ul
+                each error in errors
+                    li= error.msg
+    .continer.p-5
+        .row
+            .col 
+                h4
+                    a.text-decoration-none(href)
+                        span 
+                            | All Files 
+                    if folderPath
+                        each path in folderPath
+                            span  > 
+                            a.text-decoration-none(href="") #{path.name}
+        .row
+            .col 
+                B Name
+        if folders
+            each folder in folders
+                .row
+                    .col-auto
+                        <i class="bi bi-folder"></i>
+                    .col
+                        a(href="/user/" + folder.userId +  "/folder/" + folder.id + "/files") 
+                            p #{folder.name}
+
+

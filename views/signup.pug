@@ -1,0 +1,29 @@
+extends layout
+block content
+    h1 Sign Up Form
+    form.row.g-3.p-5.form-signup.w-100(action="/signup" method="POST")
+        .col-md-6
+            label.form-label(for='first-name' ) First Name
+            input#first-name.form-control(type='text' name='first-name' placeholder='John')
+        .col-md-6
+            label.form-label(for='last-name' ) Last Name
+            input#last-name.form-control(type='text' name='last-name' placeholder='Smith')
+        .col-12
+            label.form-label(for='username') Username
+            input#username.form-control(type='text' name='username' placeholder='kazuha')
+        .col-md-12
+            label.form-label(for='password') Password
+            input#password.form-control(type='password' name='password')
+        .col-md-12
+            label.form-label(for='password-confirm') Confirm Password
+            input#password-confirm.form-control(type='password' name='password-confirm')
+        .col-12
+            button.btn.btn-primary(type='submit') Sign up
+        p
+            | Already a member? 
+            a(href='/login') Login
+
+    if errors
+        ul 
+            for error in errors
+                li #{error.msg}
