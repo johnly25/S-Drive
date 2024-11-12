@@ -36,7 +36,6 @@ exports.UserService = class UserService {
         } else {
             console.log('file uploaded!')
             console.log(data)
-            //get url 
             const url = await supabase.storage.from('uploads').getPublicUrl(uploadName)
             console.log(url)
         }
@@ -56,8 +55,6 @@ exports.UserService = class UserService {
     }
 
     createChildFolder = async (userid, folderid, name) => {
-        //chceck if folderid is owned by userid 
-        //proceed to create folder iwthin id
         const folder = await repository.getFolder(Number(folderid))
         const folderUser = folder.userId
         if (userid == folderUser) {
@@ -66,6 +63,13 @@ exports.UserService = class UserService {
     }
     getChildFolders = async (folderid) => {
        return await repository.getChildFolders(folderid) 
+    }
 
+    deleteFolder = async(folderid) => {
+        return await repository.deleteFolder(folderid)
+    }
+
+    updateFolder = async (folderid, name) => {
+        return await repository.updateFolder(folderid, name)
     }
 }

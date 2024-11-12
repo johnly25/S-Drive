@@ -27,6 +27,7 @@ exports.getUpload = async (req, res) => {
     const user = res.locals.currentUser
     const userid = user.id
     const folders = await userService.getFolders(userid)
+    // console.log(user, folders)
     res.render("upload", { user: user, folders, folders })
 }
 
@@ -95,7 +96,26 @@ exports.postChildFolder = async (req, res) => {
 
         if (userid == currentUserId) {
             userService.createChildFolder(currentUserId, folderid, name)
-        } 
+        }
         res.redirect("/user/upload")
     }
+}
+
+exports.postDeleteFolder = async (req, res) => {
+    const userid = req.params.userid
+    const folderid = Number(req.params.folderid)
+    console.log(userid, folderid)
+    userService.deleteFolder(folderid)
+    res.redirect("/user/upload")
+}
+
+exports.postEditFolder = async (req, res) => {
+    const name  = req.body.name
+    const folderid = Number(req.params.folderid)
+
+    console.log('hello')
+    console.log(name, folderid)
+
+    userService.updateFolder(folderid, name)
+    res.redirect("/user/upload")
 }

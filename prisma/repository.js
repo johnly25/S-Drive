@@ -41,7 +41,7 @@ exports.getRootFolders = async (userid) => {
 
 exports.getFolderPath = async (folderid) => {
     return await prisma.$queryRaw
-    `
+        `
     WITH RECURSIVE folderpath as (
         select f.id, f.name, f."folderId", f."userId"
         from "Folder" f
@@ -92,4 +92,25 @@ exports.getChildFolders = async (folderid) => {
         }
     })
     return folders
+}
+
+exports.deleteFolder = async (folderid) => {
+    //prisma delete folder
+    // find folder and delete it
+    const deleteFolder = await prisma.folder.delete({
+        where: {
+            id: folderid
+        }
+    })
+}
+
+exports.updateFolder = async (folderid, name) => {
+    const updateFolder = await prisma.folder.update({
+        where: {
+            id: folderid
+        },
+        data: {
+            name: name,
+        },
+    })
 }

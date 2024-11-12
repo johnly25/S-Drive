@@ -36,6 +36,11 @@ module.exports = (passport) => {
             const user = await prisma.user.findUnique({
                 where: {
                     id: id
+                },
+                select: {
+                    id: true,
+                    fullname: true,
+                    username: true,
                 }
             })
             done(null, user);
