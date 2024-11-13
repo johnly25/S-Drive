@@ -38,6 +38,11 @@ exports.UserService = class UserService {
             console.log(data)
             const url = await supabase.storage.from('uploads').getPublicUrl(uploadName)
             console.log(url)
+            //name 
+            //url
+            //user id ? 
+            //folderid? 
+            
         }
     }
 

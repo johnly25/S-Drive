@@ -27,7 +27,6 @@ exports.getUpload = async (req, res) => {
     const user = res.locals.currentUser
     const userid = user.id
     const folders = await userService.getFolders(userid)
-    // console.log(user, folders)
     res.render("upload", { user: user, folders, folders })
 }
 
@@ -35,7 +34,7 @@ exports.postUpload = (req, res) => {
     if (res.locals.currentUser && req.file) {
         userService.uploadFile(res.locals.currentUser.username, req.file)
     }
-    res.redirect("/upload")
+    res.redirect("/user/upload")
 }
 
 exports.getLogin = (req, res) => {

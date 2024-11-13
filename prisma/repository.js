@@ -95,8 +95,6 @@ exports.getChildFolders = async (folderid) => {
 }
 
 exports.deleteFolder = async (folderid) => {
-    //prisma delete folder
-    // find folder and delete it
     const deleteFolder = await prisma.folder.delete({
         where: {
             id: folderid

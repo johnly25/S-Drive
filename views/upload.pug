@@ -39,7 +39,7 @@ block content
                                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
 
                             .modal-body 
-                                form#upload-file-form(action="" method="POST" enctype="multipart/form-data")
+                                form#upload-file-form(action="/user/upload" method="POST" enctype="multipart/form-data")
                                     .mb-3
                                         label.form-label(for='upload-file') Upload File
                                         input#upload-file.form-control(type='file' name="uploaded_file" aria-describedby='upload-file' placeholder="name")

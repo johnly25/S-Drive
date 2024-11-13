@@ -29,12 +29,15 @@ model Folder {
   folderId Int?
   folder   Folder?  @relation("ParentChild", fields: [folderId], references: [id], onDelete: Cascade)
   childFolder  Folder[] @relation("ParentChild")
-}
+  files File[]
+} 
 
 model File {
   id   Int    @id @default(autoincrement())
   name String
   url  String
+  folderId Int?
+  folder Folder? @relation(fields: [folderId], references: [id])
 }
 
 model Session {
