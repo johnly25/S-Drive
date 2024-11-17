@@ -21,11 +21,13 @@ exports.UserService = class UserService {
         });
     }
 
-    uploadFile = async (username, file) => {
+    uploadFile = async (username, file, userid) => {
         const fileName = uuidv4()
         const bufferName = (Buffer.from(file.originalname, 'latin1').toString('utf8'))
         const originalName = file.originalname
         const uploadName = username + '/' + fileName
+        const size = file.size
+
         const { data, error } = await supabase.storage.from('uploads').upload(uploadName, file.buffer, {
             contentType: file.mimetype,
             upsert: true,
@@ -34,15 +36,9 @@ exports.UserService = class UserService {
             console.log('error occured')
             console.log(error)
         } else {
-            console.log('file uploaded!')
-            console.log(data)
-            const url = await supabase.storage.from('uploads').getPublicUrl(uploadName)
-            console.log(url)
-            //name 
-            //url
-            //user id ? 
-            //folderid? 
-            
+            const {data: {publicUrl:url}} = await supabase.storage.from('uploads').getPublicUrl(uploadName)
+            console.log("url", url)
+            await repository.uploadFile(userid, originalName, url, size)          
         }
     }
 
@@ -76,5 +72,34 @@ exports.UserService = class UserService {
 
     updateFolder = async (folderid, name) => {
         return await repository.updateFolder(folderid, name)
+    }
+
+    getFiles = async (userid) => {
+        return await repository.getFiles(userid)
+    }
+
+    uploadToFolder = async (file, userid, username, folderid) => {   
+        const fileName = uuidv4()
+        const bufferName = (Buffer.from(file.originalname, 'latin1').toString('utf8'))
+        const originalName = file.originalname
+        const uploadName = username + '/' + fileName
+        const size = file.size
+        const { data, error } = await supabase.storage.from('uploads').upload(uploadName, file.buffer, {
+            contentType: file.mimetype,
+            upsert: true,
+        })
+        if (error) {
+            console.log('error occured')
+            console.log(error)
+        } else {
+            const {data: {publicUrl:url}} = await supabase.storage.from('uploads').getPublicUrl(uploadName)
+            console.log("url", url)
+            await repository.uploadToFolder(userid, folderid, originalName, url, size)
+            // await repository.uploadFile(userid, originalName, url)          
+        }
+    }
+
+    getFilesInFolder = async (folderid) => {
+        return await repository.getFilesInFolder(folderid)
     }
 }

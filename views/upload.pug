@@ -22,7 +22,7 @@ block content
                                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
 
                             .modal-body 
-                                form#create-folder-form(action="/user/upload/create/folder" method="POST")
+                                form#create-folder-form(action=folderid ? "./create" : "/user/upload/create/folder" method="POST")
                                     .mb-3
                                         label.form-label(for='folder-name') Folder Name
                                         input#folder-name.form-control(type='text' name="folder-name" aria-describedby='folder-name' placeholder="name")
@@ -39,7 +39,7 @@ block content
                                 button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
 
                             .modal-body 
-                                form#upload-file-form(action="/user/upload" method="POST" enctype="multipart/form-data")
+                                form#upload-file-form(action=folderid ? "./upload" : "/user/upload" method="POST" enctype="multipart/form-data")
                                     .mb-3
                                         label.form-label(for='upload-file') Upload File
                                         input#upload-file.form-control(type='file' name="uploaded_file" aria-describedby='upload-file' placeholder="name")
@@ -52,13 +52,22 @@ block content
             ul
                 each error in errors
                     li= error.msg
+
     .continer.p-5
         .row
             .col 
-                h4 All Files
+                h4
+                    a.text-decoration-none(href="/user/upload")
+                        span 
+                            | All Files 
+                    if folderPath
+                        each path in folderPath
+                            span  > 
+                            a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
         .row
             .col 
                 B Name
+
         if folders
             each folder in folders
                 .row
@@ -114,3 +123,32 @@ block content
                             .modal-footer
                                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
                                 button.btn.btn-primary(type='submit' form="edit-form-" + folder.id) Submit
+
+        if files
+            each file in files
+                .row
+                    .col-auto
+                        <i class="bi bi-file"></i>
+                    .col-auto
+                        a(href="#offcanvasRight" + file.id data-bs-toggle='offcanvas' data-bs-target="#offcanvasRight" + file.id) 
+                            p #{file.name}
+                    .col
+                        .btn-group.dropup
+                            buton.btn.dropdown-toggle(type='button' data-bs-toggle="dropdown" aria-expanded="false")
+                                <i class="bi bi-three-dots"></i>
+                            ul.dropdown-menu
+                                li
+                                    a.dropdown-item(href="#edit-modal" data-bs-toggle='modal' data-bs-target="#edit-modal") Edit 
+                                li
+                                    a.dropdown-item(href="#delete-modal" data-bs-toggle='modal' data-bs-target="#delete-modal") Delete 
+                .offcanvas.offcanvas-end(id="offcanvasRight" + file.id tabindex='-1' aria-labelledby='offcanvasRightLabel')
+                    .offcanvas-header
+                        h5#offcanvasRightLabel.offcanvas-title Offcanvas right id #{file.id}
+                        button.btn-close(type='button' data-bs-dismiss='offcanvas' aria-label='Close')
+                    .offcanvas-body
+                        img.img-fluid(src=file.url, alt="img")
+                        p #{file.name}
+                        p #{file.createdAt}
+                        p #{file.size}
+
+

@@ -27,12 +27,21 @@ exports.getUpload = async (req, res) => {
     const user = res.locals.currentUser
     const userid = user.id
     const folders = await userService.getFolders(userid)
-    res.render("upload", { user: user, folders, folders })
+    const files = await userService.getFiles(userid)
+    console.log(files)
+    console.log(files[0])
+    const pattern = /\.(jpg|jpeg|png|webp|avif|gif)$/
+    console.log(pattern.test(files[0].name)) 
+    res.render("upload", { user: user, folders: folders, files: files })
 }
 
 exports.postUpload = (req, res) => {
+    const user = res.locals.currentUser
+    const userid = user.id
+    const username = user.username
     if (res.locals.currentUser && req.file) {
-        userService.uploadFile(res.locals.currentUser.username, req.file)
+        console.log(req.file)
+        userService.uploadFile(username, req.file, userid)
     }
     res.redirect("/user/upload")
 }
@@ -77,8 +86,9 @@ exports.getFolder = async (req, res) => {
     if (userId == currentUserId) {
         const folders = await userService.getChildFolders(folderid)
         const folderPath = await userService.getFolderPath(folderid)
-        console.log('folderpath: ', folderPath)
-        res.render('folder', { user: currentUser, folders: folders, folderid: folderid, folderPath: folderPath })
+        const files = await userService.getFilesInFolder(folderid)
+        console.log(files)
+        res.render('upload', { user: currentUser, folders: folders, folderid: folderid, folderPath: folderPath, files: files})
     } else {
         res.redirect('/user/upload')
     }
@@ -103,18 +113,27 @@ exports.postChildFolder = async (req, res) => {
 exports.postDeleteFolder = async (req, res) => {
     const userid = req.params.userid
     const folderid = Number(req.params.folderid)
-    console.log(userid, folderid)
     userService.deleteFolder(folderid)
     res.redirect("/user/upload")
 }
 
 exports.postEditFolder = async (req, res) => {
-    const name  = req.body.name
+    const name = req.body.name
+    const folderid = Number(req.params.folderid)
+    userService.updateFolder(folderid, name)
+    res.redirect("/user/upload")
+}
+
+exports.postUploadToFolder = async (req, res) => {
+    const user = res.locals.currentUser
+    const userid = user.id
+    const username = user.username
     const folderid = Number(req.params.folderid)
 
-    console.log('hello')
-    console.log(name, folderid)
-
-    userService.updateFolder(folderid, name)
+    console.log(folderid)
+    console.log('uploading to folder')
+    if(req.file) {
+        userService.uploadToFolder(req.file, userid, username, folderid)
+    }
     res.redirect("/user/upload")
 }

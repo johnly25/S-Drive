@@ -112,3 +112,59 @@ exports.updateFolder = async (folderid, name) => {
         },
     })
 }
+
+exports.uploadFile = async (userid, name, url, size) => {
+    const file = await prisma.file.create({
+        data:{
+            name: name,
+            url: url,
+            size: size,
+            user: {
+                connect: {
+                    id: userid
+                }
+            }
+        }
+    })
+}
+
+exports.getFiles = async (userid) => {
+    const files = await prisma.file.findMany({
+        where: {
+            user: {
+                id: userid,
+            },
+            folderId: null
+        }
+    })
+    return files
+}
+exports.getFilesInFolder = async (folderid) => {
+    const files = await prisma.file.findMany({
+        where: {
+            folderId: folderid
+        }
+    })
+    return files
+}
+
+exports.uploadToFolder = async (userid, folderid, name, url, size) => {
+    const file = await prisma.file.create({
+        data:{
+            name: name,
+            url: url,
+            size: size,
+            user: {
+                connect: {
+                    id: userid
+                }
+            },
+            folder: {
+                connect: {
+                    id: folderid
+                }
+            }
+        }
+    })
+}
+

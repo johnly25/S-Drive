@@ -19,8 +19,10 @@ router.get("/upload", controller.getUpload)
 router.post("/upload", upload.single('uploaded_file'), controller.postUpload)
 router.post("/upload/create/folder", validateFolder, validateResults, controller.postFolder)
 
+
 router.get("/:userid/folder/:folderid/files", controller.getFolder)
 router.post("/:userid/folder/:folderid/create",  validateFolder, validateResults, controller.postChildFolder)
 router.post("/:userid/folder/:folderid/delete", controller.postDeleteFolder)
 router.post("/:userid/folder/:folderid/edit", controller.postEditFolder)
+router.post("/:userid/folder/:folderid/upload", upload.single('uploaded_file'), controller.postUploadToFolder)
 module.exports = router
