@@ -28,10 +28,6 @@ exports.getUpload = async (req, res) => {
     const userid = user.id
     const folders = await userService.getFolders(userid)
     const files = await userService.getFiles(userid)
-    console.log(files)
-    console.log(files[0])
-    const pattern = /\.(jpg|jpeg|png|webp|avif|gif)$/
-    console.log(pattern.test(files[0].name)) 
     res.render("upload", { user: user, folders: folders, files: files })
 }
 
@@ -40,7 +36,6 @@ exports.postUpload = (req, res) => {
     const userid = user.id
     const username = user.username
     if (res.locals.currentUser && req.file) {
-        console.log(req.file)
         userService.uploadFile(username, req.file, userid)
     }
     res.redirect("/user/upload")
