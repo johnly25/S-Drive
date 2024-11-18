@@ -124,11 +124,24 @@ exports.postUploadToFolder = async (req, res) => {
     const userid = user.id
     const username = user.username
     const folderid = Number(req.params.folderid)
-
-    console.log(folderid)
-    console.log('uploading to folder')
     if(req.file) {
         userService.uploadToFolder(req.file, userid, username, folderid)
     }
+    res.redirect("/user/upload")
+}
+
+exports.postDeleteFile = async (req, res) => {
+    const userid = req.params.userid
+    const fileid = Number(req.params.fileid)
+    userService.deleteFile(fileid)
+    res.redirect("/user/upload")
+}
+
+exports.postEditFile = async(req, res) => {
+    const name = req.body.name
+    const fileid = Number(req.params.fileid)
+    console.log(name)
+    console.log(fileid)
+    userService.updateFile(fileid, name)
     res.redirect("/user/upload")
 }

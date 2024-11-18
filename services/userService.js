@@ -92,4 +92,12 @@ exports.UserService = class UserService {
     getFilesInFolder = async (folderid) => {
         return await repository.getFilesInFolder(folderid)
     }
+    
+    deleteFile = async(fileid) => {
+        await repository.deleteFile(fileid)
+    }
+
+    updateFile = async(fileid, name) => {
+        await repository.updateFile(fileid, name)
+    }
 }

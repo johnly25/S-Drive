@@ -167,4 +167,21 @@ exports.uploadToFolder = async (userid, folderid, name, url, size) => {
         }
     })
 }
+exports.deleteFile = async(fileid) => {
+    const deleteFile = await prisma.file.delete({
+        where: {
+            id: fileid
+        }
+    })
+}
 
+exports.updateFile = async (fileid, name) => {
+    const updateFile = await prisma.file.update({
+        where: {
+            id: fileid
+        },
+        data: {
+            name: name,
+        },
+    })
+}

@@ -24,4 +24,7 @@ router.post("/:userid/folder/:folderid/create",  validateFolder, validateResults
 router.post("/:userid/folder/:folderid/delete", controller.postDeleteFolder)
 router.post("/:userid/folder/:folderid/edit", controller.postEditFolder)
 router.post("/:userid/folder/:folderid/upload", upload.single('uploaded_file'), controller.postUploadToFolder)
+router.post("/:userid/file/:fileid/delete", controller.postDeleteFile)
+router.post("/:userid/file/:fileid/edit", controller.postEditFile)
+
 module.exports = router
