@@ -113,10 +113,11 @@ exports.updateFolder = async (folderid, name) => {
     })
 }
 
-exports.uploadFile = async (userid, name, url, size) => {
+exports.uploadFile = async (userid, name,uploadName, url, size) => {
     const file = await prisma.file.create({
-        data:{
+        data: {
             name: name,
+            uploadName: uploadName,
             url: url,
             size: size,
             user: {
@@ -148,10 +149,11 @@ exports.getFilesInFolder = async (folderid) => {
     return files
 }
 
-exports.uploadToFolder = async (userid, folderid, name, url, size) => {
+exports.uploadToFolder = async (userid, folderid, name, uploadName, url, size) => {
     const file = await prisma.file.create({
-        data:{
+        data: {
             name: name,
+            uploadName: uploadName,
             url: url,
             size: size,
             user: {
@@ -167,7 +169,7 @@ exports.uploadToFolder = async (userid, folderid, name, url, size) => {
         }
     })
 }
-exports.deleteFile = async(fileid) => {
+exports.deleteFile = async (fileid) => {
     const deleteFile = await prisma.file.delete({
         where: {
             id: fileid
@@ -183,5 +185,13 @@ exports.updateFile = async (fileid, name) => {
         data: {
             name: name,
         },
+    })
+}
+
+exports.getFile = async (fileid) => {
+    return await prisma.file.findUnique({
+        where: {
+            id: fileid
+        }
     })
 }

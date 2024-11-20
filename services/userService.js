@@ -6,9 +6,6 @@ const { v4: uuidv4 } = require('uuid');
 
 
 exports.UserService = class UserService {
-    constructor() {
-    }
-
     signup = async (userData) => {
         const { "first-name": firstName, "last-name": lastName, username, password } = userData
         const fullname = firstName + ' ' + lastName
@@ -20,36 +17,35 @@ exports.UserService = class UserService {
         });
     }
 
-    uploadToFolder = async (file, userid, username, folderid) => {
-        const { originalName, url, size } = await this.storeFile(username, file, userid)
-        await repository.uploadToFolder(userid, folderid, originalName, url, size)
-    }
-
-    uploadFile = async (username, file, userid) => {
-        const { originalName, url, size } = await this.storeFile(username, file, userid)
-        await repository.uploadFile(userid, originalName, url, size)
-    }
-
-    storeFile = async (username, file, userid) => {
-        const fileName = uuidv4()
+    uploadToFolder = async (file, userid, folderid) => {
+        const uploadName = userid + '/' + uuidv4()
         const bufferName = (Buffer.from(file.originalname, 'latin1').toString('utf8'))
-        const originalName = file.originalname
-        const uploadName = username + '/' + fileName
+        await this.storeFile(file, uploadName)
+        const { data: { publicUrl: url } } = await supabase.storage.from('uploads').getPublicUrl(uploadName)
         const size = file.size
+        const originalName = file.originalname
+        await repository.uploadToFolder(userid, folderid, bufferName, uploadName, url, size)
+    }
+
+    uploadFile = async (file, userid) => {
+        const uploadName = userid + '/' + uuidv4()
+        const bufferName = (Buffer.from(file.originalname, 'latin1').toString('utf8'))
+        await this.storeFile(file, uploadName)
+
+        const { data: { publicUrl: url } } = await supabase.storage.from('uploads').getPublicUrl(uploadName)
+        const size = file.size
+        const originalName = file.originalname
+        await repository.uploadFile(userid, bufferName, uploadName, url, size)
+
+    }
+
+    storeFile = async (file, uploadName) => {
         const { data, error } = await supabase.storage.from('uploads').upload(uploadName, file.buffer, {
             contentType: file.mimetype,
             upsert: true,
         })
         if (error) {
-            console.log('error occured')
-            console.log(error)
             return Error;
-        } else {
-            const { data: { publicUrl: url } } = await supabase.storage.from('uploads').getPublicUrl(uploadName)
-            console.log("url", url)
-            const obj = { originalName: originalName, url: url, size: size }
-            console.log("obj:", obj)
-            return obj
         }
     }
 
@@ -85,6 +81,10 @@ exports.UserService = class UserService {
         return await repository.updateFolder(folderid, name)
     }
 
+    getFile = async (fileid) => {
+        return await repository.getFile(fileid)
+    }
+
     getFiles = async (userid) => {
         return await repository.getFiles(userid)
     }
@@ -92,12 +92,21 @@ exports.UserService = class UserService {
     getFilesInFolder = async (folderid) => {
         return await repository.getFilesInFolder(folderid)
     }
-    
-    deleteFile = async(fileid) => {
+
+    deleteFile = async (fileid) => {
         await repository.deleteFile(fileid)
     }
 
-    updateFile = async(fileid, name) => {
+    deteleFileinStorage = async (userid, fileid) => {
+        const file = await repository.getFile(fileid)
+        const path = file.uploadName;
+        const {data, error} = await supabase.storage.from('uploads').remove([path])
+        if (error) {
+            return Error;
+        }
+    }
+
+    updateFile = async (fileid, name) => {
         await repository.updateFile(fileid, name)
     }
 }

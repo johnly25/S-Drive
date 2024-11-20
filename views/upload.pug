@@ -1,5 +1,4 @@
 extends layout 
-
 block content 
     .container-fluid.px-5.pt-5
         .row
@@ -15,7 +14,7 @@ block content
 
 
                 #folder-modal.modal.fade(tabindex='-1' aria-labelledby='folder-modal' aria-hidden='true')
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Create Folder
@@ -32,7 +31,7 @@ block content
                                 button.btn.btn-primary(type='submit' form="create-folder-form") Create
 
                 #upload-modal.modal.fade(tabindex='-1' aria-labelledby='upload-modal' aria-hidden='true')
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Upload File 
@@ -87,7 +86,7 @@ block content
                                     a.dropdown-item(href="#delete-modal" + folder.id data-bs-toggle='modal' data-bs-target="#delete-modal" + folder.id) Delete 
 
                 .modal.fade(tabindex='-1' aria-labelledby='delete-modal' aria-hidden='true' id="delete-modal" + folder.id)
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Delete Folder
@@ -96,14 +95,14 @@ block content
                                 h4 Are you sure you want to delete this folder? 
                                 form(action="/user/" + user.id + "/folder/" + folder.id + "/delete" id="delete-form"+folder.id method="POST")
                                     .mb-3
-                                        p #{folder.id}
-                                        input(type="hidden" id="" name="folderid" value=folder.id)
+                                        p #{folder.name}
+                                        input.form-control(type="hidden" id="" name="folderid" value=folder.id)
                             .modal-footer
                                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
                                 button.btn.btn-primary(type='submit' form="delete-form"+folder.id) Delete
 
                 .modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-modal" + folder.id)
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Edit Folder
@@ -113,10 +112,9 @@ block content
                                 h4 Edit Name
                                 form(action="/user/" + user.id + "/folder/" + folder.id + "/edit" id="edit-form-" + folder.id method="POST")
                                     .mb-3
-                                        p #{folder.id}
-                                        label(for="edit-name-" + folder.id) Name
+                                        label.form-label(for="edit-name-" + folder.id) Name
                                         br
-                                        input(type="text" id="edit-name-" + folder.id  name = "name" value=folder.name)
+                                        input.form-control(type="text" id="edit-name-" + folder.id  name = "name" value=folder.name)
 
                             .modal-footer
                                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
@@ -139,9 +137,11 @@ block content
                                     a.dropdown-item(href="#edit-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#edit-file-modal" + file.id) Edit 
                                 li
                                     a.dropdown-item(href="#delete-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#delete-file-modal" + file.id) Delete 
+                                li 
+                                    a.dropdown-item(href="/user/" + user.id + "/file/" + file.id + "/download") Download
 
                 .modal.fade(tabindex='-1' aria-labelledby='delete-modal' aria-hidden='true' id="delete-file-modal" + file.id)
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Delete Folder
@@ -157,7 +157,7 @@ block content
                                 button.btn.btn-primary(type='submit' form="delete-file-form"+file.id) Delete
 
                 .modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-file-modal" + file.id)
-                    .modal-dialog
+                    .modal-dialog.modal-lg
                         .modal-content
                             .modal-header
                                 h1.modal-title.fs-5 Edit File
@@ -168,9 +168,9 @@ block content
                                 form(action="/user/" + user.id + "/file/" + file.id + "/edit" id="edit-file-form-" + file.id method="POST")
                                     .mb-3
                                         p #{file.id}
-                                        label(for="edit-name-" + file.id) Name
+                                        label.form-label(for="edit-name-" + file.id) Name
                                         br
-                                        input(type="text" id="edit-name-" + file.id  name = "name" value=file.name)
+                                        input.form-control(type="text" id="edit-name-" + file.id  name = "name" value=file.name)
 
                             .modal-footer
                                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
