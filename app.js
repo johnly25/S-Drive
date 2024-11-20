@@ -8,6 +8,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('./config/session.js')
 const { error } = require("console")
+const {isAuthenticated} = require("./middleware/authenticate.js")
 
 // process.on('warning', (warning) => {
 //   console.log(warning.stack);
@@ -36,7 +37,7 @@ app.use('/css', express.static(path.join(__dirname, 'styles')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 app.use('/', router)
-app.use('/user',userRouter)
+app.use('/user', isAuthenticated, userRouter)
 app.use(errorHandler)
 
 app.listen(port, () => {

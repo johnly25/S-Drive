@@ -9,8 +9,15 @@ const repo = require('../prisma/repository')
 const fs = require('fs');
 
 exports.getIndex = async (req, res) => {
-
-    res.render("index", { user: res.locals.currentUser })
+    const user = res.locals.currentUser
+    if(user) {
+        const userid = user.id
+        const folders = await userService.getFolders(userid)
+        const files = await userService.getFiles(userid)
+        res.render("index", { user: user, folders: folders, files: files })
+    } else {
+        res.render("index")
+    }
 }
 
 exports.getSignup = (req, res) => {
@@ -42,7 +49,7 @@ exports.postUpload = async (req, res) => {
     if (res.locals.currentUser && req.file) {
         await userService.uploadFile(req.file, userid)
     }
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.getLogin = (req, res) => {
@@ -52,11 +59,11 @@ exports.getLogin = (req, res) => {
 
 exports.postFolder = (req, res) => {
     if (res.locals.errors) {
-        res.render("upload", { errors: res.locals.errors })
+        res.render("index", { errors: res.locals.errors })
     } else if (res.locals.currentUser) {
         const { "folder-name": name } = req.body
         userService.createFolder(res.locals.currentUser.username, name)
-        res.redirect("/user/upload")
+        res.redirect("/")
     }
 }
 
@@ -86,9 +93,9 @@ exports.getFolder = async (req, res) => {
         const folders = await userService.getChildFolders(folderid)
         const folderPath = await userService.getFolderPath(folderid)
         const files = await userService.getFilesInFolder(folderid)
-        res.render('upload', { user: currentUser, folders: folders, folderid: folderid, folderPath: folderPath, files: files })
+        res.render('index', { user: currentUser, folders: folders, folderid: folderid, folderPath: folderPath, files: files })
     } else {
-        res.redirect('/user/upload')
+        res.redirect('/')
     }
 }
 
@@ -103,7 +110,7 @@ exports.postChildFolder = async (req, res) => {
         if (userid == currentUserId) {
             userService.createChildFolder(currentUserId, folderid, name)
         }
-        res.redirect("/user/upload")
+        res.redirect("/")
     }
 }
 
@@ -111,14 +118,14 @@ exports.postDeleteFolder = async (req, res) => {
     const userid = req.params.userid
     const folderid = Number(req.params.folderid)
     userService.deleteFolder(folderid)
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.postEditFolder = async (req, res) => {
     const name = req.body.name
     const folderid = Number(req.params.folderid)
     userService.updateFolder(folderid, name)
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.postUploadToFolder = async (req, res) => {
@@ -129,7 +136,7 @@ exports.postUploadToFolder = async (req, res) => {
     if (req.file) {
         userService.uploadToFolder(req.file, userid, folderid)
     }
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.postDeleteFile = async (req, res) => {
@@ -137,14 +144,14 @@ exports.postDeleteFile = async (req, res) => {
     const fileid = Number(req.params.fileid)
     await userService.deteleFileinStorage(userid, fileid)
     await userService.deleteFile(fileid)
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.postEditFile = async (req, res) => {
     const name = req.body.name
     const fileid = Number(req.params.fileid)
     userService.updateFile(fileid, name)
-    res.redirect("/user/upload")
+    res.redirect("/")
 }
 
 exports.downloadFile = async (req, res) => {
