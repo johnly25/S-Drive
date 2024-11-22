@@ -101,7 +101,7 @@ exports.getFolder = async (req, res) => {
 
 exports.postChildFolder = async (req, res) => {
     if (res.locals.errors) {
-        res.render("folder", { errors: res.locals.errors })
+        res.render("index", { errors: res.locals.errors })
     } else {
         const userid = req.params.userid
         const folderid = req.params.folderid
