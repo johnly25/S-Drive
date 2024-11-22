@@ -1,6 +1,6 @@
-.sidebar.d-flex
-    .d-flex.flex-column.flex-shrink-0.p-3.text-bg-dark(style='width: 280px;')
-        a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.text-white.text-decoration-none(href='/')
+if user
+    .d-flex.flex-column.flex-shrink-0.p-3.h-100.bg-body-tertiary(style='width: 280px;')
+        a.d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.text-decoration-none(href='/')
             svg.bi.pe-none.me-2(width='40' height='32')
             use(xlink:href='#bootstrap')
             span.fs-4 Sidebar
@@ -12,31 +12,31 @@
                     use(xlink:href='#home')
                     |           Home
             li
-                a.nav-link.text-white(href='#')
+                a.nav-link(href='#')
                     svg.bi.pe-none.me-2(width='16' height='16')
                     use(xlink:href='#speedometer2')
                     |           Dashboard
             li
-                a.nav-link.text-white(href='#')
+                a.nav-link(href='#')
                     svg.bi.pe-none.me-2(width='16' height='16')
                     use(xlink:href='#table')
                     |           Orders
             li
-                a.nav-link.text-white(href='#')
+                a.nav-link(href='#')
                     svg.bi.pe-none.me-2(width='16' height='16')
                     use(xlink:href='#grid')
                     |           Products
             li
-                a.nav-link.text-white(href='#')
+                a.nav-link(href='#')
                     svg.bi.pe-none.me-2(width='16' height='16')
                     use(xlink:href='#people-circle')
                     |           Customers
         hr
         .dropdown
-            a.d-flex.align-items-center.text-white.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
+            a.d-flex.align-items-center.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
                 img.rounded-circle.me-2(src='https://github.com/mdo.png' alt='' width='32' height='32')
                 strong mdo
-            ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(style='')
+            ul.dropdown-menu.dropdown-menu-dark.text-small.shadow
                 li
                     a.dropdown-item(href='#') New project...
                 li

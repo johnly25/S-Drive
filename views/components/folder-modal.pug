@@ -1,0 +1,16 @@
+#folder-modal.modal.fade(tabindex='-1' aria-labelledby='folder-modal' aria-hidden='true')
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                h1.modal-title.fs-5 Create Folder
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+            .modal-body 
+                form#create-folder-form(action=folderid ? "./create" : "/user/upload/create/folder" method="POST")
+                    .mb-3
+                        label.form-label(for='folder-name') Folder Name
+                        input#folder-name.form-control(type='text' name="folder-name" aria-describedby='folder-name' placeholder="name")
+
+            .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                button.btn.btn-primary(type='submit' form="create-folder-form") Create

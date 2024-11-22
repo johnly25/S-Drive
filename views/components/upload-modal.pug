@@ -1,0 +1,16 @@
+#upload-modal.modal.fade(tabindex='-1' aria-labelledby='upload-modal' aria-hidden='true')
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                h1.modal-title.fs-5 Upload File 
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+            .modal-body 
+                form#upload-file-form(action=folderid ? "./upload" : "/user/upload" method="POST" enctype="multipart/form-data")
+                    .mb-3
+                        label.form-label(for='upload-file') Upload File
+                        input#upload-file.form-control(type='file' name="uploaded_file" aria-describedby='upload-file' placeholder="name")
+
+            .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                button.btn.btn-primary(type='submit' form="upload-file-form") Upload

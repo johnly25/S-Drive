@@ -1,0 +1,20 @@
+if folders
+    each folder in folders
+        .row
+            .col-auto
+                <i class="bi bi-folder"></i>
+            .col-auto
+                a(href="/user/" + folder.userId +  "/folder/" + folder.id + "/files") 
+                    p #{folder.name}
+            .col
+                .btn-group.dropup
+                    buton.btn.dropdown-toggle(type='button' data-bs-toggle="dropdown" aria-expanded="false")
+                        <i class="bi bi-three-dots"></i>
+                    ul.dropdown-menu
+                        li
+                            a.dropdown-item(href="#edit-modal" + folder.id data-bs-toggle='modal' data-bs-target="#edit-modal" + folder.id) Edit 
+                        li
+                            a.dropdown-item(href="#delete-modal" + folder.id data-bs-toggle='modal' data-bs-target="#delete-modal" + folder.id) Delete
+
+        include folder-delete-modal.pug
+        include folder-edit-modal.pug

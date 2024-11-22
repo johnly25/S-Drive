@@ -1,0 +1,23 @@
+if files
+    each file in files
+        .row
+            .col-auto
+                <i class="bi bi-file"></i>
+            .col-auto
+                a(href="#offcanvasRight" + file.id data-bs-toggle='offcanvas' data-bs-target="#offcanvasRight" + file.id) 
+                    p #{file.name}
+            .col
+                .btn-group.dropup
+                    buton.btn.dropdown-toggle(type='button' data-bs-toggle="dropdown" aria-expanded="false")
+                        <i class="bi bi-three-dots"></i>
+                    ul.dropdown-menu
+                        li
+                            a.dropdown-item(href="#edit-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#edit-file-modal" + file.id) Edit 
+                        li
+                            a.dropdown-item(href="#delete-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#delete-file-modal" + file.id) Delete 
+                        li 
+                            a.dropdown-item(href="/user/" + user.id + "/file/" + file.id + "/download") Download
+
+        include delete-file-modal.pug
+        include edit-file-modal.pug
+        include off-canvas.pug

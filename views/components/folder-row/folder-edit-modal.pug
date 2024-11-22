@@ -1,0 +1,18 @@
+.modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-modal" + folder.id)
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                h1.modal-title.fs-5 Edit Folder
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+            .modal-body 
+                h4 Edit Name
+                form(action="/user/" + user.id + "/folder/" + folder.id + "/edit" id="edit-form-" + folder.id method="POST")
+                    .mb-3
+                        label.form-label(for="edit-name-" + folder.id) Name
+                        br
+                        input.form-control(type="text" id="edit-name-" + folder.id  name = "name" value=folder.name)
+
+            .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                button.btn.btn-primary(type='submit' form="edit-form-" + folder.id) Submit

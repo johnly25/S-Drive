@@ -1,0 +1,19 @@
+.modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-file-modal" + file.id)
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                h1.modal-title.fs-5 Edit File
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+            .modal-body 
+                h4 Edit Name
+                form(action="/user/" + user.id + "/file/" + file.id + "/edit" id="edit-file-form-" + file.id method="POST")
+                    .mb-3
+                        p #{file.id}
+                        label.form-label(for="edit-name-" + file.id) Name
+                        br
+                        input.form-control(type="text" id="edit-name-" + file.id  name = "name" value=file.name)
+
+            .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                button.btn.btn-primary(type='submit' form="edit-file-form-" + file.id) Submit

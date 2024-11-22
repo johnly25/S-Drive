@@ -1,0 +1,10 @@
+.offcanvas.offcanvas-end(id="offcanvasRight" + file.id tabindex='-1' aria-labelledby='offcanvasRightLabel')
+    .offcanvas-header
+        h5#offcanvasRightLabel.offcanvas-title Offcanvas right id #{file.id}
+        button.btn-close(type='button' data-bs-dismiss='offcanvas' aria-label='Close')
+    .offcanvas-body
+        if /\.(jpg|jpeg|png|webp|avif|gif)$/.test(file.name)
+            img.img-fluid(src=file.url, alt="img")
+        p #{file.name}
+        p #{file.createdAt}
+        p #{file.size}

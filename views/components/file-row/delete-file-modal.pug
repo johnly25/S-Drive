@@ -1,0 +1,15 @@
+.modal.fade(tabindex='-1' aria-labelledby='delete-modal' aria-hidden='true' id="delete-file-modal" + file.id)
+    .modal-dialog.modal-lg
+        .modal-content
+            .modal-header
+                h1.modal-title.fs-5 Delete Folder
+                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body 
+                h4 Are you sure you want to delete this File? 
+                form(action="/user/" + user.id + "/file/" + file.id + "/delete" id="delete-file-form"+file.id method="POST")
+                    .mb-3
+                        p #{file.id}
+                        input(type="hidden" id="" name="fileid" value=file.id)
+            .modal-footer
+                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
+                button.btn.btn-primary(type='submit' form="delete-file-form"+file.id) Delete

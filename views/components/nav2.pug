@@ -1,0 +1,13 @@
+nav.navbar.navbar-expand-lg
+    .container-fluid
+        .navbar-brand S Drive
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+            .navbar-nav
+            a.nav-link.active(aria-current='page' href='/') Home
+            if !user
+                a.nav-link(href="/signup") Signup
+                a.nav-link(href="/login") Login
+            if user
+                a.nav-link(href="/logout") Log outF

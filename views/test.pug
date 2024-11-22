@@ -1,187 +1,26 @@
 if user
-    .container-fluid.px-5.pt-5
-        .row
-            .col-auto
-                .dropdown
-                    button.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
-                        | Dropdown button
-                    ul.dropdown-menu.dropdown-menu-dark
-                        li
-                        a.dropdown-item.active(href='#folder-modal' data-bs-toggle='modal' data-bs-target='#folder-modal') Create Folder
-                        li
-                        a.dropdown-item(href='#upload-modal' data-bs-toggle='modal' data-bs-target='#upload-modal' ) Upload File 
+    .row.px-5.pt-5
+        .col-auto
+            include components/dropdown.pug
+            include components/folder-modal.pug
+            include components/upload-modal.pug
+    .row 
+        include components/errors.pug
 
+    .row.p-5
+        .col 
+            h4
+                a.text-decoration-none(href="/")
+                    span 
+                        | All Files 
+                if folderPath
+                    each path in folderPath
+                        span  > 
+                        a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
+    .row
+        .col 
+            B Name
 
-                #folder-modal.modal.fade(tabindex='-1' aria-labelledby='folder-modal' aria-hidden='true')
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Create Folder
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+    include components/folder-row/folder-row.pug
+    include components/file-row/file-row.pug
 
-                            .modal-body 
-                                form#create-folder-form(action=folderid ? "./create" : "/user/upload/create/folder" method="POST")
-                                    .mb-3
-                                        label.form-label(for='folder-name') Folder Name
-                                        input#folder-name.form-control(type='text' name="folder-name" aria-describedby='folder-name' placeholder="name")
-
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="create-folder-form") Create
-
-                #upload-modal.modal.fade(tabindex='-1' aria-labelledby='upload-modal' aria-hidden='true')
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Upload File 
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-
-                            .modal-body 
-                                form#upload-file-form(action=folderid ? "./upload" : "/user/upload" method="POST" enctype="multipart/form-data")
-                                    .mb-3
-                                        label.form-label(for='upload-file') Upload File
-                                        input#upload-file.form-control(type='file' name="uploaded_file" aria-describedby='upload-file' placeholder="name")
-
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="upload-file-form") Upload
-        if errors
-            .ps-5
-                ul
-                    each error in errors
-                        li= error.msg
-
-
-        .row.p-5
-            .col 
-                h4
-                    a.text-decoration-none(href="/")
-                        span 
-                            | All Files 
-                    if folderPath
-                        each path in folderPath
-                            span  > 
-                            a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
-        .row
-            .col 
-                B Name
-
-        if folders
-            each folder in folders
-                .row
-                    .col-auto
-                        <i class="bi bi-folder"></i>
-                    .col-auto
-                        a(href="/user/" + folder.userId +  "/folder/" + folder.id + "/files") 
-                            p #{folder.name}
-                    .col
-                        .btn-group.dropup
-                            buton.btn.dropdown-toggle(type='button' data-bs-toggle="dropdown" aria-expanded="false")
-                                <i class="bi bi-three-dots"></i>
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href="#edit-modal" + folder.id data-bs-toggle='modal' data-bs-target="#edit-modal" + folder.id) Edit 
-                                li
-                                    a.dropdown-item(href="#delete-modal" + folder.id data-bs-toggle='modal' data-bs-target="#delete-modal" + folder.id) Delete 
-
-                .modal.fade(tabindex='-1' aria-labelledby='delete-modal' aria-hidden='true' id="delete-modal" + folder.id)
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Delete Folder
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-                            .modal-body 
-                                h4 Are you sure you want to delete this folder? 
-                                form(action="/user/" + user.id + "/folder/" + folder.id + "/delete" id="delete-form"+folder.id method="POST")
-                                    .mb-3
-                                        p #{folder.name}
-                                        input.form-control(type="hidden" id="" name="folderid" value=folder.id)
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="delete-form"+folder.id) Delete
-
-                .modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-modal" + folder.id)
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Edit Folder
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-
-                            .modal-body 
-                                h4 Edit Name
-                                form(action="/user/" + user.id + "/folder/" + folder.id + "/edit" id="edit-form-" + folder.id method="POST")
-                                    .mb-3
-                                        label.form-label(for="edit-name-" + folder.id) Name
-                                        br
-                                        input.form-control(type="text" id="edit-name-" + folder.id  name = "name" value=folder.name)
-
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="edit-form-" + folder.id) Submit
-
-        if files
-            each file in files
-                .row
-                    .col-auto
-                        <i class="bi bi-file"></i>
-                    .col-auto
-                        a(href="#offcanvasRight" + file.id data-bs-toggle='offcanvas' data-bs-target="#offcanvasRight" + file.id) 
-                            p #{file.name}
-                    .col
-                        .btn-group.dropup
-                            buton.btn.dropdown-toggle(type='button' data-bs-toggle="dropdown" aria-expanded="false")
-                                <i class="bi bi-three-dots"></i>
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href="#edit-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#edit-file-modal" + file.id) Edit 
-                                li
-                                    a.dropdown-item(href="#delete-file-modal" + file.id data-bs-toggle='modal' data-bs-target="#delete-file-modal" + file.id) Delete 
-                                li 
-                                    a.dropdown-item(href="/user/" + user.id + "/file/" + file.id + "/download") Download
-
-                .modal.fade(tabindex='-1' aria-labelledby='delete-modal' aria-hidden='true' id="delete-file-modal" + file.id)
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Delete Folder
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-                            .modal-body 
-                                h4 Are you sure you want to delete this File? 
-                                form(action="/user/" + user.id + "/file/" + file.id + "/delete" id="delete-file-form"+file.id method="POST")
-                                    .mb-3
-                                        p #{file.id}
-                                        input(type="hidden" id="" name="fileid" value=file.id)
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="delete-file-form"+file.id) Delete
-
-                .modal.fade(tabindex='-1' aria-labelledby='' aria-hidden='true' id="edit-file-modal" + file.id)
-                    .modal-dialog.modal-lg
-                        .modal-content
-                            .modal-header
-                                h1.modal-title.fs-5 Edit File
-                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
-
-                            .modal-body 
-                                h4 Edit Name
-                                form(action="/user/" + user.id + "/file/" + file.id + "/edit" id="edit-file-form-" + file.id method="POST")
-                                    .mb-3
-                                        p #{file.id}
-                                        label.form-label(for="edit-name-" + file.id) Name
-                                        br
-                                        input.form-control(type="text" id="edit-name-" + file.id  name = "name" value=file.name)
-
-                            .modal-footer
-                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
-                                button.btn.btn-primary(type='submit' form="edit-file-form-" + file.id) Submit
-
-                .offcanvas.offcanvas-end(id="offcanvasRight" + file.id tabindex='-1' aria-labelledby='offcanvasRightLabel')
-                    .offcanvas-header
-                        h5#offcanvasRightLabel.offcanvas-title Offcanvas right id #{file.id}
-                        button.btn-close(type='button' data-bs-dismiss='offcanvas' aria-label='Close')
-                    .offcanvas-body
-                        if /\.(jpg|jpeg|png|webp|avif|gif)$/.test(file.name)
-                            img.img-fluid(src=file.url, alt="img")
-                        p #{file.name}
-                        p #{file.createdAt}
-                        p #{file.size}
