@@ -45,14 +45,14 @@ if user
                             .modal-footer
                                 button.btn.btn-secondary(type='button' data-bs-dismiss='modal') Cancel
                                 button.btn.btn-primary(type='submit' form="upload-file-form") Upload
-    if errors
-        .ps-5
-            ul
-                each error in errors
-                    li= error.msg
+        if errors
+            .ps-5
+                ul
+                    each error in errors
+                        li= error.msg
 
-    .continer.p-5
-        .row
+
+        .row.p-5
             .col 
                 h4
                     a.text-decoration-none(href="/")

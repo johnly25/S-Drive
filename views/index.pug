@@ -1,13 +1,14 @@
 extends layout 
-block content 
-    h1 S-Drive
-    if user 
-        h1 Welcome #{user.username}
-    else 
-        p login to use s-drive
+block content
+    .container-fluid.text-bg-dark
+        h1 S-Drive
+        if user 
+            h1 Welcome #{user.username}
+        else 
+            p login to use s-drive
 
-    if error
-        h2 #{error}
+        if error
+            h2 #{error}
 
-    include test.pug
+        include test.pug
         
