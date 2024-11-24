@@ -1,8 +1,14 @@
 h4
-    a.text-decoration-none(href="/")
-        span 
-            | All Files 
-    if folderPath
-        each path in folderPath
-            span  > 
-            a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
+    nav(aria-label='breadcrumb')
+        ol.breadcrumb.breadcrumb-chevron.p-3.bg-body-tertiary.rounded-3
+            li.breadcrumb-item
+                a.link-body-emphasis(href='/')
+                    i.bi.bi-house-door-fill.h-2
+            if folderPath
+                each path,index in folderPath
+                    if index < folderPath.length-1
+                        li.breadcrumb-item
+                                a.link-body-emphasis.fw-semibold.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
+                    else
+                        li.breadcrumb-item.active(aria-current='page') #{path.name}
+        
