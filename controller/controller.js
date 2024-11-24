@@ -2,11 +2,7 @@ const { UserService } = require("../services/userService")
 const { isEmpty } = require("../utils/utils")
 const userService = new UserService()
 const https = require("https");
-const path = require("path")
-const request = require("request")
 const passport = require('passport')
-const repo = require('../prisma/repository')
-const fs = require('fs');
 
 exports.getIndex = async (req, res) => {
     const user = res.locals.currentUser

@@ -1,6 +1,6 @@
 extends layout 
 block content 
-    .row.px-5.pt-5
+    .row
         .col-auto
             .dropdown
                 button.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
@@ -20,7 +20,7 @@ block content
                 each error in errors
                     li= error.msg
 
-        .row.p-5
+        .row
             .col 
                 h4
                     a.text-decoration-none(href="/user/upload")

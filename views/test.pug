@@ -1,26 +1,20 @@
 if user
-    .row.px-5.pt-5
+    .row
         .col-auto
             include components/dropdown.pug
             include components/folder-modal.pug
             include components/upload-modal.pug
+            
     .row 
         include components/errors.pug
 
-    .row.p-5
+    .row
         .col 
-            h4
-                a.text-decoration-none(href="/")
-                    span 
-                        | All Files 
-                if folderPath
-                    each path in folderPath
-                        span  > 
-                        a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
+            include components/breadcrumbs.pug
+
     .row
         .col 
             B Name
-
     include components/folder-row/folder-row.pug
     include components/file-row/file-row.pug
 

@@ -1,0 +1,8 @@
+h4
+    a.text-decoration-none(href="/")
+        span 
+            | All Files 
+    if folderPath
+        each path in folderPath
+            span  > 
+            a.text-decoration-none(href="/user/" + path.userId +  "/folder/" + path.id + "/files") #{path.name}
