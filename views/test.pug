@@ -1,6 +1,6 @@
 if user
-    .row
-        .col-auto
+    .row.pt-5
+        .col
             include components/dropdown.pug
             include components/folder-modal.pug
             include components/upload-modal.pug
@@ -8,13 +8,11 @@ if user
     .row 
         include components/errors.pug
 
-    .row
-        .col 
+    .row.pt-5
+        .col
             include components/breadcrumbs.pug
-
-    .row
-        .col 
             B Name
+            hr
     include components/folder-row/folder-row.pug
     include components/file-row/file-row.pug
 

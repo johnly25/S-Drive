@@ -1,6 +1,8 @@
 .dropdown
-    button.btn.btn-primary.dropdown-toggle(type='button' data-bs-toggle='dropdown' aria-expanded='false')
-        | Dropdown button
+    button.btn.btn-primary.border.border-primary.rounded-4.btn-lg.pe-5(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+        .d-flex.flex-column.gap-2
+            i(class="bi bi-plus h2 mb-0 d-flex justify-content-start")
+            | Create
     ul.dropdown-menu.dropdown-menu-dark
         li
             a.dropdown-item.active(href='#folder-modal' data-bs-toggle='modal' data-bs-target='#folder-modal') Create Folder

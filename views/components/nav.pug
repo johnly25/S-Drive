@@ -8,37 +8,13 @@ if user
                 li
                     a.dropdown-item(href='#') New project...
                 li
-                    a.dropdown-item(href='#') Settings
-                li
-                    a.dropdown-item(href='#') Profile
-                li
                     hr.dropdown-divider
                 li
-                    a.dropdown-item(href='#') Sign out
+                    a.dropdown-item(href='/logout') Sign out
         hr
         ul.nav.nav-pills.flex-column.mb-auto
             li.nav-item
-                a.nav-link.active(href='#' aria-current='page')
+                a.nav-link.active(href='/' aria-current='page')
                     svg.bi.pe-none.me-2(width='16' height='16')
                     use(xlink:href='#home')
                     |           Home
-            li
-                a.nav-link(href='#')
-                    svg.bi.pe-none.me-2(width='16' height='16')
-                    use(xlink:href='#speedometer2')
-                    |           Dashboard
-            li
-                a.nav-link(href='#')
-                    svg.bi.pe-none.me-2(width='16' height='16')
-                    use(xlink:href='#table')
-                    |           Orders
-            li
-                a.nav-link(href='#')
-                    svg.bi.pe-none.me-2(width='16' height='16')
-                    use(xlink:href='#grid')
-                    |           Products
-            li
-                a.nav-link(href='#')
-                    svg.bi.pe-none.me-2(width='16' height='16')
-                    use(xlink:href='#people-circle')
-                    |           Customers
