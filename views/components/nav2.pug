@@ -1,7 +1,7 @@
 nav.navbar.navbar-expand-lg.bg-body-tertiary
     .container-fluid
-        .navbar-brand S Drive
-        if !user
+        .navbar-brand.d-flex 
+            |S Drive
             button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
                 span.navbar-toggler-icon
             #navbarNav.collapse.navbar-collapse
@@ -12,3 +12,15 @@ nav.navbar.navbar-expand-lg.bg-body-tertiary
                         a.nav-link(href="/login") Login
                     if user
                         a.nav-link(href="/logout") Log out
+                        
+        .dropdown.pe-4
+            a.d-flex.align-items-center.text-decoration-none(href='#' data-bs-toggle='dropdown' aria-expanded='false')
+                i(class="bi bi-person-circle mb-0 me-2 h2")
+                strong #{user.username}
+            ul.dropdown-menu.dropdown-menu-dark.text-small.shadow
+                li
+                    a.dropdown-item(href='#') New project...
+                li
+                    hr.dropdown-divider
+                li
+                    a.dropdown-item(href='/logout') Sign out
