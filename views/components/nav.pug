@@ -1,20 +1,23 @@
-if user
-    .d-flex.flex-column.flex-shrink-0.h-100.bg-body-tertiary.p-3(style='width: 280px;')
-        .dropdown
-            a.d-flex.align-items-center.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
-                i(class="bi bi-person-circle mb-0 me-2 h2")
-                strong #{user.username}
-            ul.dropdown-menu.dropdown-menu-dark.text-small.shadow
-                li
-                    a.dropdown-item(href='#') New project...
-                li
-                    hr.dropdown-divider
-                li
-                    a.dropdown-item(href='/logout') Sign out
-        hr
-        ul.nav.nav-pills.flex-column.mb-auto
-            li.nav-item
-                a.nav-link.active(href='/' aria-current='page')
-                    svg.bi.pe-none.me-2(width='16' height='16')
-                    use(xlink:href='#home')
-                    |           Home
+nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
+    .container-fluid
+        a.navbar-brand(href='#') S-Drive
+        button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbar' aria-controls='#navbar' aria-expanded='false' aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+        #navbar.collapse.navbar-collapse
+            ul.navbar-nav.me-auto.mb-2.mb-sm-0
+                li.nav-item
+                    a.nav-link(aria-current='page' href='/') Home
+                if !user
+                    li.nav-item
+                        a.nav-link(href="/signup") Signup
+                    li.nav-item
+                        a.nav-link(href="/login") Login
+            if user
+                ul.navbar-nav.mb-2.mb-sm-0
+                    li.nav-item.dropdown.dropdown.pe-5
+                        a.d-flex.align-items-center(href='#' data-bs-toggle='dropdown' aria-expanded='false')
+                            i(class="bi bi-person-circle mb-0 me-2 h2")
+                            strong #{user.username}
+                        ul.dropdown-menu.dropdown-menu-dark.text-small.shadow
+                            li
+                                a.dropdown-item(href='/logout') Sign out
