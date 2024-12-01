@@ -69,14 +69,27 @@ exports.UserService = class UserService {
             repository.createChildFolder(Number(folderid), name, folderUser)
         }
     }
+    
     getChildFolders = async (folderid) => {
         return await repository.getChildFolders(folderid)
     }
 
     deleteFolder = async (folderid) => {
-        return await repository.deleteFolder(folderid)
+        await this.deleteFilesInFolders(folderid)
+        await repository.deleteFolder(folderid)
     }
-
+    
+    deleteFilesInFolders = async (folderid) => {
+        const files = await repository.getFilesInFolders(folderid)
+        console.log(files)
+        const uploadNames = files.map(file => file.uploadName)
+        await this.deleteFilesInStorage(uploadNames)
+        
+        const filesid = files.map(file => Number(file.id))
+        await this.deleteFilesInDatabase(filesid)
+        console.log("files deleted")
+    }
+    
     updateFolder = async (folderid, name) => {
         return await repository.updateFolder(folderid, name)
     }
@@ -100,12 +113,26 @@ exports.UserService = class UserService {
     deteleFileinStorage = async (userid, fileid) => {
         const file = await repository.getFile(fileid)
         const path = file.uploadName;
+        console.log(path)
         const {data, error} = await supabase.storage.from('uploads').remove([path])
         if (error) {
             return Error;
         }
+        console.log(data)
     }
-
+    
+    deleteFilesInStorage = async (fileNames) => {
+        const {data, error} = await supabase.storage.from('uploads').remove(fileNames)
+        if (error) {
+            return Error;
+        }
+        console.log(data)
+    }
+    
+    deleteFilesInDatabase = async (files) => {
+        console.log(files)
+        await repository.deleteFiles(files)
+    }
     updateFile = async (fileid, name) => {
         await repository.updateFile(fileid, name)
     }

@@ -1,0 +1,15 @@
+WITH RECURSIVE folderHierarchy as (
+    select f.id, f.name, f."folderId", f."userId"
+    from "Folder" as f
+    where id=11
+    
+    union all
+    
+    select f.id, f.name, f."folderId", f."userId"
+    from "Folder" as f
+    JOIN folderHierarchy fh ON f."folderId" = fh.id
+)
+    select *
+    from "File"
+    where "File"."folderId" IN (select id from folderHierarchy)
+    

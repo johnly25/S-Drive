@@ -113,7 +113,7 @@ exports.updateFolder = async (folderid, name) => {
     })
 }
 
-exports.uploadFile = async (userid, name,uploadName, url, size) => {
+exports.uploadFile = async (userid, name, uploadName, url, size) => {
     const file = await prisma.file.create({
         data: {
             name: name,
@@ -140,6 +140,7 @@ exports.getFiles = async (userid) => {
     })
     return files
 }
+
 exports.getFilesInFolder = async (folderid) => {
     const files = await prisma.file.findMany({
         where: {
@@ -148,6 +149,25 @@ exports.getFilesInFolder = async (folderid) => {
     })
     return files
 }
+
+exports.getFilesInFolders = async (folderid) => {
+    return await prisma.$queryRaw
+        `
+        WITH RECURSIVE folderHierarchy as (
+            SELECT f.id, f.name, f."folderId", f."userId"
+            FROM "Folder" AS f
+            WHERE id= ${folderid}
+            UNION 
+            SELECT f.id, f.name, f."folderId", f."userId"
+            FROM "Folder" AS f
+            JOIN folderHierarchy fh ON f."folderId" = fh.id
+        )
+        SELECT *
+        FROM "File"
+        WHERE "File"."folderId" IN (SELECT id FROM folderHierarchy);
+        `
+
+    }
 
 exports.uploadToFolder = async (userid, folderid, name, uploadName, url, size) => {
     const file = await prisma.file.create({
@@ -169,6 +189,7 @@ exports.uploadToFolder = async (userid, folderid, name, uploadName, url, size) =
         }
     })
 }
+
 exports.deleteFile = async (fileid) => {
     const deleteFile = await prisma.file.delete({
         where: {
@@ -193,5 +214,13 @@ exports.getFile = async (fileid) => {
         where: {
             id: fileid
         }
+    })
+}
+
+exports.deleteFiles = async (filesid) => {
+    const deleteFile = await prisma.file.deleteMany({
+        where: {
+            id: { in: filesid },
+          },
     })
 }
