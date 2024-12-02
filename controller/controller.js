@@ -6,7 +6,7 @@ const passport = require('passport')
 
 exports.getIndex = async (req, res) => {
     const user = res.locals.currentUser
-    if(user) {
+    if (user) {
         const userid = user.id
         const folders = await userService.getFolders(userid)
         const files = await userService.getFiles(userid)
@@ -150,14 +150,23 @@ exports.postEditFile = async (req, res) => {
     res.redirect("/")
 }
 
-exports.downloadFile = async (req, res) => {
+exports.downloadFile = async (req, res, next) => {
     const fileid = Number(req.params.fileid)
     const file = await userService.getFile(fileid)
     const url = file.url
     const filename = file.name
-    var externalReq = https.request(url, function (file) {
-        res.setHeader("content-disposition", "attachment; filename=" + filename);
-        file.pipe(res);
-    });
+    var externalReq = https.request(url, (file) => {
+        try {
+            res.setHeader("content-disposition", "attachment; filename=" + filename);
+            file.pipe(res);
+        } catch (err) {
+            next(err)
+        }
+    }); 
+       
+    externalReq.on('error', (err) =>{
+        next(err)
+    })
     externalReq.end();
+ 
 }
