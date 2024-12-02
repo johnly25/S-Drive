@@ -155,6 +155,7 @@ exports.downloadFile = async (req, res, next) => {
     const file = await userService.getFile(fileid)
     const url = file.url
     const filename = file.name
+    
     var externalReq = https.request(url, (file) => {
         try {
             res.setHeader("content-disposition", "attachment; filename=" + filename);
@@ -163,7 +164,6 @@ exports.downloadFile = async (req, res, next) => {
             next(err)
         }
     }); 
-       
     externalReq.on('error', (err) =>{
         next(err)
     })
