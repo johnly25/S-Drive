@@ -10,9 +10,6 @@ const session = require('./config/session.js')
 const { error } = require("console")
 const {isAuthenticated} = require("./middleware/authenticate.js")
 
-// process.on('warning', (warning) => {
-//   console.log(warning.stack);
-// });
 function errorHandler (err, req, res, next) {
   res.status(500)
   res.render('index', {user: res.locals.currentUser, error: err })
